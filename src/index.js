@@ -19,6 +19,7 @@ function mongoConfig() {
   const username = process.env.MONGO_USER?.trim() || process.env.MONGODB_USER?.trim();
   const password = process.env.MONGO_PASSWORD ?? process.env.MONGODB_PASSWORD;
   const database = process.env.MONGO_DB?.trim() || process.env.MONGODB_DB?.trim();
+  const authSource = process.env.MONGO_AUTH_SOURCE?.trim() || "admin";
   const host = process.env.MONGO_HOST?.trim() || process.env.MONGODB_HOST?.trim() || "127.0.0.1";
   const portMongo = process.env.MONGO_PORT?.trim() || process.env.MONGODB_PORT?.trim() || "27017";
 
@@ -33,7 +34,7 @@ function mongoConfig() {
     username && password !== undefined && password !== null
       ? `${encodeURIComponent(username)}:${encodeURIComponent(password)}@`
       : "";
-  return `mongodb://${auth}${host}:${portMongo}/${database}`;
+  return `mongodb://${auth}${host}:${portMongo}/${database}?authSource=${encodeURIComponent(authSource)}`;
 }
 
 mongoose
